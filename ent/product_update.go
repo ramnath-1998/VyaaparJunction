@@ -57,17 +57,23 @@ func (pu *ProductUpdate) SetNillableIdentifier(u *uuid.UUID) *ProductUpdate {
 	return pu
 }
 
-// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
-func (pu *ProductUpdate) SetCategoryID(id int) *ProductUpdate {
-	pu.mutation.SetCategoryID(id)
+// SetCategoryId sets the "categoryId" field.
+func (pu *ProductUpdate) SetCategoryId(i int) *ProductUpdate {
+	pu.mutation.SetCategoryId(i)
 	return pu
 }
 
-// SetNillableCategoryID sets the "category" edge to the ProductCategory entity by ID if the given value is not nil.
-func (pu *ProductUpdate) SetNillableCategoryID(id *int) *ProductUpdate {
-	if id != nil {
-		pu = pu.SetCategoryID(*id)
+// SetNillableCategoryId sets the "categoryId" field if the given value is not nil.
+func (pu *ProductUpdate) SetNillableCategoryId(i *int) *ProductUpdate {
+	if i != nil {
+		pu.SetCategoryId(*i)
 	}
+	return pu
+}
+
+// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
+func (pu *ProductUpdate) SetCategoryID(id int) *ProductUpdate {
+	pu.mutation.SetCategoryID(id)
 	return pu
 }
 
@@ -120,6 +126,9 @@ func (pu *ProductUpdate) check() error {
 		if err := product.ProductNameValidator(v); err != nil {
 			return &ValidationError{Name: "productName", err: fmt.Errorf(`ent: validator failed for field "Product.productName": %w`, err)}
 		}
+	}
+	if _, ok := pu.mutation.CategoryID(); pu.mutation.CategoryCleared() && !ok {
+		return errors.New(`ent: clearing a required unique edge "Product.category"`)
 	}
 	return nil
 }
@@ -219,17 +228,23 @@ func (puo *ProductUpdateOne) SetNillableIdentifier(u *uuid.UUID) *ProductUpdateO
 	return puo
 }
 
-// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
-func (puo *ProductUpdateOne) SetCategoryID(id int) *ProductUpdateOne {
-	puo.mutation.SetCategoryID(id)
+// SetCategoryId sets the "categoryId" field.
+func (puo *ProductUpdateOne) SetCategoryId(i int) *ProductUpdateOne {
+	puo.mutation.SetCategoryId(i)
 	return puo
 }
 
-// SetNillableCategoryID sets the "category" edge to the ProductCategory entity by ID if the given value is not nil.
-func (puo *ProductUpdateOne) SetNillableCategoryID(id *int) *ProductUpdateOne {
-	if id != nil {
-		puo = puo.SetCategoryID(*id)
+// SetNillableCategoryId sets the "categoryId" field if the given value is not nil.
+func (puo *ProductUpdateOne) SetNillableCategoryId(i *int) *ProductUpdateOne {
+	if i != nil {
+		puo.SetCategoryId(*i)
 	}
+	return puo
+}
+
+// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
+func (puo *ProductUpdateOne) SetCategoryID(id int) *ProductUpdateOne {
+	puo.mutation.SetCategoryID(id)
 	return puo
 }
 
@@ -295,6 +310,9 @@ func (puo *ProductUpdateOne) check() error {
 		if err := product.ProductNameValidator(v); err != nil {
 			return &ValidationError{Name: "productName", err: fmt.Errorf(`ent: validator failed for field "Product.productName": %w`, err)}
 		}
+	}
+	if _, ok := puo.mutation.CategoryID(); puo.mutation.CategoryCleared() && !ok {
+		return errors.New(`ent: clearing a required unique edge "Product.category"`)
 	}
 	return nil
 }

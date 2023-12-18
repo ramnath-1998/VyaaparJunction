@@ -28,13 +28,13 @@ func (pcc *ProductCategoryCreate) SetCategoryName(s string) *ProductCategoryCrea
 	return pcc
 }
 
-// SetIdentifier sets the "Identifier" field.
+// SetIdentifier sets the "identifier" field.
 func (pcc *ProductCategoryCreate) SetIdentifier(u uuid.UUID) *ProductCategoryCreate {
 	pcc.mutation.SetIdentifier(u)
 	return pcc
 }
 
-// SetNillableIdentifier sets the "Identifier" field if the given value is not nil.
+// SetNillableIdentifier sets the "identifier" field if the given value is not nil.
 func (pcc *ProductCategoryCreate) SetNillableIdentifier(u *uuid.UUID) *ProductCategoryCreate {
 	if u != nil {
 		pcc.SetIdentifier(*u)
@@ -127,7 +127,7 @@ func (pcc *ProductCategoryCreate) check() error {
 		}
 	}
 	if _, ok := pcc.mutation.Identifier(); !ok {
-		return &ValidationError{Name: "Identifier", err: errors.New(`ent: missing required field "ProductCategory.Identifier"`)}
+		return &ValidationError{Name: "identifier", err: errors.New(`ent: missing required field "ProductCategory.identifier"`)}
 	}
 	if _, ok := pcc.mutation.CreatedOn(); !ok {
 		return &ValidationError{Name: "createdOn", err: errors.New(`ent: missing required field "ProductCategory.createdOn"`)}

@@ -43,13 +43,13 @@ func (pcu *ProductCategoryUpdate) SetNillableCategoryName(s *string) *ProductCat
 	return pcu
 }
 
-// SetIdentifier sets the "Identifier" field.
+// SetIdentifier sets the "identifier" field.
 func (pcu *ProductCategoryUpdate) SetIdentifier(u uuid.UUID) *ProductCategoryUpdate {
 	pcu.mutation.SetIdentifier(u)
 	return pcu
 }
 
-// SetNillableIdentifier sets the "Identifier" field if the given value is not nil.
+// SetNillableIdentifier sets the "identifier" field if the given value is not nil.
 func (pcu *ProductCategoryUpdate) SetNillableIdentifier(u *uuid.UUID) *ProductCategoryUpdate {
 	if u != nil {
 		pcu.SetIdentifier(*u)
@@ -232,13 +232,13 @@ func (pcuo *ProductCategoryUpdateOne) SetNillableCategoryName(s *string) *Produc
 	return pcuo
 }
 
-// SetIdentifier sets the "Identifier" field.
+// SetIdentifier sets the "identifier" field.
 func (pcuo *ProductCategoryUpdateOne) SetIdentifier(u uuid.UUID) *ProductCategoryUpdateOne {
 	pcuo.mutation.SetIdentifier(u)
 	return pcuo
 }
 
-// SetNillableIdentifier sets the "Identifier" field if the given value is not nil.
+// SetNillableIdentifier sets the "identifier" field if the given value is not nil.
 func (pcuo *ProductCategoryUpdateOne) SetNillableIdentifier(u *uuid.UUID) *ProductCategoryUpdateOne {
 	if u != nil {
 		pcuo.SetIdentifier(*u)

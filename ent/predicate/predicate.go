@@ -6,8 +6,17 @@ import (
 	"entgo.io/ent/dialect/sql"
 )
 
+// Order is the predicate function for order builders.
+type Order func(*sql.Selector)
+
+// Order_Item is the predicate function for order_item builders.
+type Order_Item func(*sql.Selector)
+
 // Product is the predicate function for product builders.
 type Product func(*sql.Selector)
 
 // ProductCategory is the predicate function for productcategory builders.
 type ProductCategory func(*sql.Selector)
+
+// User is the predicate function for user builders.
+type User func(*sql.Selector)

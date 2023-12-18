@@ -21,7 +21,7 @@ func DBConnect() {
 		MinVersion: tls.VersionTLS12,
 		ServerName: "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
 	})
-	client, err := ent.Open("mysql", "455GNSfHbboubjm.root:1fdYPVLgkhC7aZT1@tcp(gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000)/VyaaparJunctionDev?tls=tidb")
+	client, err := ent.Open("mysql", "455GNSfHbboubjm.root:2SbpTjF2GDOygear@tcp(gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000)/VyaaparJunctionDev?tls=tidb")
 	if err != nil {
 		log.Fatalf("failed opening connection to tidb: %v", err)
 	}

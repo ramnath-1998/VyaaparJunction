@@ -8,13 +8,44 @@ import (
 )
 
 var (
+	// OrdersColumns holds the columns for the "orders" table.
+	OrdersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "identifier", Type: field.TypeUUID, Unique: true},
+		{Name: "created_on", Type: field.TypeTime},
+		{Name: "user_id", Type: field.TypeInt},
+	}
+	// OrdersTable holds the schema information for the "orders" table.
+	OrdersTable = &schema.Table{
+		Name:       "orders",
+		Columns:    OrdersColumns,
+		PrimaryKey: []*schema.Column{OrdersColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "orders_users_order",
+				Columns:    []*schema.Column{OrdersColumns[3]},
+				RefColumns: []*schema.Column{UsersColumns[0]},
+				OnDelete:   schema.NoAction,
+			},
+		},
+	}
+	// OrderItemsColumns holds the columns for the "order_items" table.
+	OrderItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+	}
+	// OrderItemsTable holds the schema information for the "order_items" table.
+	OrderItemsTable = &schema.Table{
+		Name:       "order_items",
+		Columns:    OrderItemsColumns,
+		PrimaryKey: []*schema.Column{OrderItemsColumns[0]},
+	}
 	// ProductsColumns holds the columns for the "products" table.
 	ProductsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "product_name", Type: field.TypeString},
 		{Name: "identifier", Type: field.TypeUUID},
 		{Name: "created_on", Type: field.TypeTime},
-		{Name: "product_category_product", Type: field.TypeInt, Nullable: true},
+		{Name: "category_id", Type: field.TypeInt},
 	}
 	// ProductsTable holds the schema information for the "products" table.
 	ProductsTable = &schema.Table{
@@ -26,7 +57,7 @@ var (
 				Symbol:     "products_product_categories_product",
 				Columns:    []*schema.Column{ProductsColumns[4]},
 				RefColumns: []*schema.Column{ProductCategoriesColumns[0]},
-				OnDelete:   schema.SetNull,
+				OnDelete:   schema.NoAction,
 			},
 		},
 	}
@@ -34,7 +65,7 @@ var (
 	ProductCategoriesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
 		{Name: "category_name", Type: field.TypeString},
-		{Name: "identifier", Type: field.TypeUUID},
+		{Name: "identifier", Type: field.TypeUUID, Unique: true},
 		{Name: "created_on", Type: field.TypeTime},
 	}
 	// ProductCategoriesTable holds the schema information for the "product_categories" table.
@@ -43,13 +74,32 @@ var (
 		Columns:    ProductCategoriesColumns,
 		PrimaryKey: []*schema.Column{ProductCategoriesColumns[0]},
 	}
+	// UsersColumns holds the columns for the "users" table.
+	UsersColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "username", Type: field.TypeString, Unique: true},
+		{Name: "password", Type: field.TypeString},
+		{Name: "name", Type: field.TypeString},
+		{Name: "identifier", Type: field.TypeUUID, Unique: true},
+		{Name: "created_on", Type: field.TypeTime},
+	}
+	// UsersTable holds the schema information for the "users" table.
+	UsersTable = &schema.Table{
+		Name:       "users",
+		Columns:    UsersColumns,
+		PrimaryKey: []*schema.Column{UsersColumns[0]},
+	}
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
+		OrdersTable,
+		OrderItemsTable,
 		ProductsTable,
 		ProductCategoriesTable,
+		UsersTable,
 	}
 )
 
 func init() {
+	OrdersTable.ForeignKeys[0].RefTable = UsersTable
 	ProductsTable.ForeignKeys[0].RefTable = ProductCategoriesTable
 }

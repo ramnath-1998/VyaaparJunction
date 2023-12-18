@@ -21,6 +21,8 @@ const (
 	FieldIdentifier = "identifier"
 	// FieldCreatedOn holds the string denoting the createdon field in the database.
 	FieldCreatedOn = "created_on"
+	// FieldCategoryId holds the string denoting the categoryid field in the database.
+	FieldCategoryId = "category_id"
 	// EdgeCategory holds the string denoting the category edge name in mutations.
 	EdgeCategory = "category"
 	// Table holds the table name of the product in the database.
@@ -31,7 +33,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "productcategory" package.
 	CategoryInverseTable = "product_categories"
 	// CategoryColumn is the table column denoting the category relation/edge.
-	CategoryColumn = "product_category_product"
+	CategoryColumn = "category_id"
 )
 
 // Columns holds all SQL columns for product fields.
@@ -40,23 +42,13 @@ var Columns = []string{
 	FieldProductName,
 	FieldIdentifier,
 	FieldCreatedOn,
-}
-
-// ForeignKeys holds the SQL foreign-keys that are owned by the "products"
-// table and are not defined as standalone fields in the schema.
-var ForeignKeys = []string{
-	"product_category_product",
+	FieldCategoryId,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
 func ValidColumn(column string) bool {
 	for i := range Columns {
 		if column == Columns[i] {
-			return true
-		}
-	}
-	for i := range ForeignKeys {
-		if column == ForeignKeys[i] {
 			return true
 		}
 	}
@@ -93,6 +85,11 @@ func ByIdentifier(opts ...sql.OrderTermOption) OrderOption {
 // ByCreatedOn orders the results by the createdOn field.
 func ByCreatedOn(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCreatedOn, opts...).ToFunc()
+}
+
+// ByCategoryId orders the results by the categoryId field.
+func ByCategoryId(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldCategoryId, opts...).ToFunc()
 }
 
 // ByCategoryField orders the results by category field.

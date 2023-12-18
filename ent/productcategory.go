@@ -20,8 +20,8 @@ type ProductCategory struct {
 	ID int `json:"id,omitempty"`
 	// CategoryName holds the value of the "categoryName" field.
 	CategoryName string `json:"categoryName,omitempty"`
-	// Identifier holds the value of the "Identifier" field.
-	Identifier uuid.UUID `json:"Identifier,omitempty"`
+	// Identifier holds the value of the "identifier" field.
+	Identifier uuid.UUID `json:"identifier,omitempty"`
 	// CreatedOn holds the value of the "createdOn" field.
 	CreatedOn time.Time `json:"createdOn,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
@@ -90,7 +90,7 @@ func (pc *ProductCategory) assignValues(columns []string, values []any) error {
 			}
 		case productcategory.FieldIdentifier:
 			if value, ok := values[i].(*uuid.UUID); !ok {
-				return fmt.Errorf("unexpected type %T for field Identifier", values[i])
+				return fmt.Errorf("unexpected type %T for field identifier", values[i])
 			} else if value != nil {
 				pc.Identifier = *value
 			}
@@ -144,7 +144,7 @@ func (pc *ProductCategory) String() string {
 	builder.WriteString("categoryName=")
 	builder.WriteString(pc.CategoryName)
 	builder.WriteString(", ")
-	builder.WriteString("Identifier=")
+	builder.WriteString("identifier=")
 	builder.WriteString(fmt.Sprintf("%v", pc.Identifier))
 	builder.WriteString(", ")
 	builder.WriteString("createdOn=")

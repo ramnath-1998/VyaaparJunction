@@ -61,7 +61,7 @@ func CategoryName(v string) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldEQ(FieldCategoryName, v))
 }
 
-// Identifier applies equality check predicate on the "Identifier" field. It's identical to IdentifierEQ.
+// Identifier applies equality check predicate on the "identifier" field. It's identical to IdentifierEQ.
 func Identifier(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldEQ(FieldIdentifier, v))
 }
@@ -136,42 +136,42 @@ func CategoryNameContainsFold(v string) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldContainsFold(FieldCategoryName, v))
 }
 
-// IdentifierEQ applies the EQ predicate on the "Identifier" field.
+// IdentifierEQ applies the EQ predicate on the "identifier" field.
 func IdentifierEQ(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldEQ(FieldIdentifier, v))
 }
 
-// IdentifierNEQ applies the NEQ predicate on the "Identifier" field.
+// IdentifierNEQ applies the NEQ predicate on the "identifier" field.
 func IdentifierNEQ(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldNEQ(FieldIdentifier, v))
 }
 
-// IdentifierIn applies the In predicate on the "Identifier" field.
+// IdentifierIn applies the In predicate on the "identifier" field.
 func IdentifierIn(vs ...uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldIn(FieldIdentifier, vs...))
 }
 
-// IdentifierNotIn applies the NotIn predicate on the "Identifier" field.
+// IdentifierNotIn applies the NotIn predicate on the "identifier" field.
 func IdentifierNotIn(vs ...uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldNotIn(FieldIdentifier, vs...))
 }
 
-// IdentifierGT applies the GT predicate on the "Identifier" field.
+// IdentifierGT applies the GT predicate on the "identifier" field.
 func IdentifierGT(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldGT(FieldIdentifier, v))
 }
 
-// IdentifierGTE applies the GTE predicate on the "Identifier" field.
+// IdentifierGTE applies the GTE predicate on the "identifier" field.
 func IdentifierGTE(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldGTE(FieldIdentifier, v))
 }
 
-// IdentifierLT applies the LT predicate on the "Identifier" field.
+// IdentifierLT applies the LT predicate on the "identifier" field.
 func IdentifierLT(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldLT(FieldIdentifier, v))
 }
 
-// IdentifierLTE applies the LTE predicate on the "Identifier" field.
+// IdentifierLTE applies the LTE predicate on the "identifier" field.
 func IdentifierLTE(v uuid.UUID) predicate.ProductCategory {
 	return predicate.ProductCategory(sql.FieldLTE(FieldIdentifier, v))
 }

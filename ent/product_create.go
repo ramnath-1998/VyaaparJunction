@@ -56,17 +56,15 @@ func (pc *ProductCreate) SetNillableCreatedOn(t *time.Time) *ProductCreate {
 	return pc
 }
 
-// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
-func (pc *ProductCreate) SetCategoryID(id int) *ProductCreate {
-	pc.mutation.SetCategoryID(id)
+// SetCategoryId sets the "categoryId" field.
+func (pc *ProductCreate) SetCategoryId(i int) *ProductCreate {
+	pc.mutation.SetCategoryId(i)
 	return pc
 }
 
-// SetNillableCategoryID sets the "category" edge to the ProductCategory entity by ID if the given value is not nil.
-func (pc *ProductCreate) SetNillableCategoryID(id *int) *ProductCreate {
-	if id != nil {
-		pc = pc.SetCategoryID(*id)
-	}
+// SetCategoryID sets the "category" edge to the ProductCategory entity by ID.
+func (pc *ProductCreate) SetCategoryID(id int) *ProductCreate {
+	pc.mutation.SetCategoryID(id)
 	return pc
 }
 
@@ -136,6 +134,12 @@ func (pc *ProductCreate) check() error {
 	if _, ok := pc.mutation.CreatedOn(); !ok {
 		return &ValidationError{Name: "createdOn", err: errors.New(`ent: missing required field "Product.createdOn"`)}
 	}
+	if _, ok := pc.mutation.CategoryId(); !ok {
+		return &ValidationError{Name: "categoryId", err: errors.New(`ent: missing required field "Product.categoryId"`)}
+	}
+	if _, ok := pc.mutation.CategoryID(); !ok {
+		return &ValidationError{Name: "category", err: errors.New(`ent: missing required edge "Product.category"`)}
+	}
 	return nil
 }
 
@@ -188,7 +192,7 @@ func (pc *ProductCreate) createSpec() (*Product, *sqlgraph.CreateSpec) {
 		for _, k := range nodes {
 			edge.Target.Nodes = append(edge.Target.Nodes, k)
 		}
-		_node.product_category_product = &nodes[0]
+		_node.CategoryId = nodes[0]
 		_spec.Edges = append(_spec.Edges, edge)
 	}
 	return _node, _spec

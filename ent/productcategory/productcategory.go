@@ -31,7 +31,7 @@ const (
 	// It exists in this package in order to avoid circular dependency with the "product" package.
 	ProductInverseTable = "products"
 	// ProductColumn is the table column denoting the product relation/edge.
-	ProductColumn = "product_category_product"
+	ProductColumn = "category_id"
 )
 
 // Columns holds all SQL columns for productcategory fields.
@@ -55,7 +55,7 @@ func ValidColumn(column string) bool {
 var (
 	// CategoryNameValidator is a validator for the "categoryName" field. It is called by the builders before save.
 	CategoryNameValidator func(string) error
-	// DefaultIdentifier holds the default value on creation for the "Identifier" field.
+	// DefaultIdentifier holds the default value on creation for the "identifier" field.
 	DefaultIdentifier func() uuid.UUID
 	// DefaultCreatedOn holds the default value on creation for the "createdOn" field.
 	DefaultCreatedOn func() time.Time
@@ -74,7 +74,7 @@ func ByCategoryName(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldCategoryName, opts...).ToFunc()
 }
 
-// ByIdentifier orders the results by the Identifier field.
+// ByIdentifier orders the results by the identifier field.
 func ByIdentifier(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldIdentifier, opts...).ToFunc()
 }

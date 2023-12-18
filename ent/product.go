@@ -25,11 +25,12 @@ type Product struct {
 	Identifier uuid.UUID `json:"Identifier,omitempty"`
 	// CreatedOn holds the value of the "createdOn" field.
 	CreatedOn time.Time `json:"createdOn,omitempty"`
+	// CategoryId holds the value of the "categoryId" field.
+	CategoryId int `json:"categoryId,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the ProductQuery when eager-loading is set.
-	Edges                    ProductEdges `json:"edges"`
-	product_category_product *int
-	selectValues             sql.SelectValues
+	Edges        ProductEdges `json:"edges"`
+	selectValues sql.SelectValues
 }
 
 // ProductEdges holds the relations/edges for other nodes in the graph.
@@ -59,7 +60,7 @@ func (*Product) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case product.FieldID:
+		case product.FieldID, product.FieldCategoryId:
 			values[i] = new(sql.NullInt64)
 		case product.FieldProductName:
 			values[i] = new(sql.NullString)
@@ -67,8 +68,6 @@ func (*Product) scanValues(columns []string) ([]any, error) {
 			values[i] = new(sql.NullTime)
 		case product.FieldIdentifier:
 			values[i] = new(uuid.UUID)
-		case product.ForeignKeys[0]: // product_category_product
-			values[i] = new(sql.NullInt64)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -108,12 +107,11 @@ func (pr *Product) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				pr.CreatedOn = value.Time
 			}
-		case product.ForeignKeys[0]:
+		case product.FieldCategoryId:
 			if value, ok := values[i].(*sql.NullInt64); !ok {
-				return fmt.Errorf("unexpected type %T for edge-field product_category_product", value)
+				return fmt.Errorf("unexpected type %T for field categoryId", values[i])
 			} else if value.Valid {
-				pr.product_category_product = new(int)
-				*pr.product_category_product = int(value.Int64)
+				pr.CategoryId = int(value.Int64)
 			}
 		default:
 			pr.selectValues.Set(columns[i], values[i])
@@ -164,6 +162,9 @@ func (pr *Product) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("createdOn=")
 	builder.WriteString(pr.CreatedOn.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("categoryId=")
+	builder.WriteString(fmt.Sprintf("%v", pr.CategoryId))
 	builder.WriteByte(')')
 	return builder.String()
 }

@@ -71,6 +71,11 @@ func CreatedOn(v time.Time) predicate.Product {
 	return predicate.Product(sql.FieldEQ(FieldCreatedOn, v))
 }
 
+// CategoryId applies equality check predicate on the "categoryId" field. It's identical to CategoryIdEQ.
+func CategoryId(v int) predicate.Product {
+	return predicate.Product(sql.FieldEQ(FieldCategoryId, v))
+}
+
 // ProductNameEQ applies the EQ predicate on the "productName" field.
 func ProductNameEQ(v string) predicate.Product {
 	return predicate.Product(sql.FieldEQ(FieldProductName, v))
@@ -214,6 +219,26 @@ func CreatedOnLT(v time.Time) predicate.Product {
 // CreatedOnLTE applies the LTE predicate on the "createdOn" field.
 func CreatedOnLTE(v time.Time) predicate.Product {
 	return predicate.Product(sql.FieldLTE(FieldCreatedOn, v))
+}
+
+// CategoryIdEQ applies the EQ predicate on the "categoryId" field.
+func CategoryIdEQ(v int) predicate.Product {
+	return predicate.Product(sql.FieldEQ(FieldCategoryId, v))
+}
+
+// CategoryIdNEQ applies the NEQ predicate on the "categoryId" field.
+func CategoryIdNEQ(v int) predicate.Product {
+	return predicate.Product(sql.FieldNEQ(FieldCategoryId, v))
+}
+
+// CategoryIdIn applies the In predicate on the "categoryId" field.
+func CategoryIdIn(vs ...int) predicate.Product {
+	return predicate.Product(sql.FieldIn(FieldCategoryId, vs...))
+}
+
+// CategoryIdNotIn applies the NotIn predicate on the "categoryId" field.
+func CategoryIdNotIn(vs ...int) predicate.Product {
+	return predicate.Product(sql.FieldNotIn(FieldCategoryId, vs...))
 }
 
 // HasCategory applies the HasEdge predicate on the "category" edge.

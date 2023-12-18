@@ -23,7 +23,6 @@ type ProductQuery struct {
 	inters       []Interceptor
 	predicates   []predicate.Product
 	withCategory *ProductCategoryQuery
-	withFKs      bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -369,18 +368,11 @@ func (pq *ProductQuery) prepareQuery(ctx context.Context) error {
 func (pq *ProductQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Product, error) {
 	var (
 		nodes       = []*Product{}
-		withFKs     = pq.withFKs
 		_spec       = pq.querySpec()
 		loadedTypes = [1]bool{
 			pq.withCategory != nil,
 		}
 	)
-	if pq.withCategory != nil {
-		withFKs = true
-	}
-	if withFKs {
-		_spec.Node.Columns = append(_spec.Node.Columns, product.ForeignKeys...)
-	}
 	_spec.ScanValues = func(columns []string) ([]any, error) {
 		return (*Product).scanValues(nil, columns)
 	}
@@ -412,10 +404,7 @@ func (pq *ProductQuery) loadCategory(ctx context.Context, query *ProductCategory
 	ids := make([]int, 0, len(nodes))
 	nodeids := make(map[int][]*Product)
 	for i := range nodes {
-		if nodes[i].product_category_product == nil {
-			continue
-		}
-		fk := *nodes[i].product_category_product
+		fk := nodes[i].CategoryId
 		if _, ok := nodeids[fk]; !ok {
 			ids = append(ids, fk)
 		}
@@ -432,7 +421,7 @@ func (pq *ProductQuery) loadCategory(ctx context.Context, query *ProductCategory
 	for _, n := range neighbors {
 		nodes, ok := nodeids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected foreign-key "product_category_product" returned %v`, n.ID)
+			return fmt.Errorf(`unexpected foreign-key "categoryId" returned %v`, n.ID)
 		}
 		for i := range nodes {
 			assign(nodes[i], n)
@@ -465,6 +454,9 @@ func (pq *ProductQuery) querySpec() *sqlgraph.QuerySpec {
 			if fields[i] != product.FieldID {
 				_spec.Node.Columns = append(_spec.Node.Columns, fields[i])
 			}
+		}
+		if pq.withCategory != nil {
+			_spec.Node.AddColumnOnce(product.FieldCategoryId)
 		}
 	}
 	if ps := pq.predicates; len(ps) > 0 {

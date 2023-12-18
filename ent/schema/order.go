@@ -9,20 +9,25 @@ import (
 	"github.com/google/uuid"
 )
 
-type ProductCategory struct {
+type Order struct {
 	ent.Schema
 }
 
-func (ProductCategory) Fields() []ent.Field {
+func (Order) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("categoryName").NotEmpty(),
+
+		field.Int("userId"),
 		field.UUID("identifier", uuid.UUID{}).Default(uuid.New).Unique(),
 		field.Time("createdOn").Default(time.Now().UTC).Immutable(),
 	}
 }
 
-func (ProductCategory) Edges() []ent.Edge {
+func (Order) Edges() []ent.Edge {
 	return []ent.Edge{
-		edge.To("product", Product.Type),
+		edge.From("user", User.Type).
+			Ref("order").
+			Field("userId").
+			Unique().
+			Required(),
 	}
 }

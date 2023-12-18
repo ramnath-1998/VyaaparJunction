@@ -27,14 +27,11 @@ func CreateProduct(client *ent.Client) (*ent.ProductCategory, error) {
 
 func init() {
 	db.DBConnect()
-	routes.RunRoutes()
+
 }
 
 func main() {
-	category, err := CreateProduct(&db.DbClient)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println(category)
+	CreateProduct(&db.DbClient)
+	routes.RunRoutes()
 	defer db.DbClient.Close()
 }
